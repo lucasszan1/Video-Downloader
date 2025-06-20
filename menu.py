@@ -5,6 +5,7 @@ from rich.console import Console
 console = Console()
 
 class MainMenu ():
+#Função que executa o menu principal da aplicação.
     def main_menu():
         while True:
             console.print(Panel.fit('[bold red]VIDEO DOWNLOADER[/bold red]', border_style="Black"))

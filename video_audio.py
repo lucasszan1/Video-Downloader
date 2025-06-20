@@ -2,37 +2,55 @@ import yt_dlp
 from rich.prompt import Prompt
 from rich.console import Console
 
+console = Console()
 class VideoDownloader:
-    def __init__(self, path='./'):
-        self.path = path
+    def __init__(self, path_both="vidoaudio", path_audio="audio", path_video="video"):
+        self.path_both = path_both
+        self.path_video = path_video
+        self.path_audio = path_audio
         self.console = Console()
 
+   
+
+#Função que obtem o link que o usuario mandar atraves do promp.ask.
     def get_video_link(self):
         return Prompt.ask("[bold green]Paste the URL of the video you want to download here [/bold green][bold red]or digit 'q' to quit: [/bold red]")
 
+
+#função que define as configurações de download, essa é para download do video e do audio.
     def config_options_both(self):
         return {
-                'outtmpl': f'{self.path}/%(title)s.%(ext)s',
+                'outtmpl': f'{self.path_both}/%(title)s.%(ext)s',
                 'format': 'bestvideo+bestaudio/best',
+                'quiet': True,
+                'no_warnings': True,
                 'merge_output_format': 'mp4',
             }
     
+#função que define as configurações de download, essa é somente para o audio.
     def config_options_only_audio(self):
         return {
-                'outtmpl': f'{self.path}/%(title)s.%(ext)s',
+                'quiet': True,
+                'no_warnings': True,
+                'outtmpl': f'{self.path_audio}/%(title)s.%(ext)s',
                 'format': 'bestaudio',
             }
     
+#Função que define as configurações de download, essa é somente para o video.
     def config_options_only_video(self):
         return {
-                'outtmpl': f'{self.path}/%(title)s.%(ext)s',
+                'outtmpl': f'{self.path_video}/%(title)s.%(ext)s',
                 'format': 'bestvideo',
+                'quiet': True,
+                'no_warnings': True,
             }
     
+#Função que realiza o download do video.
     def download_video(self, link, ydl_options):
-         with yt_dlp.YoutubeDL(ydl_options) as ydl:
-                ydl.download([link])
-    
+        with yt_dlp.YoutubeDL(ydl_options) as ydl:
+            ydl.download([link])
+
+#Função que faz o download usando a função que tem como a configuração o download de ambos video/audio.
     def get_download_both(self):
         while True:
             link = self.get_video_link()
@@ -47,6 +65,7 @@ class VideoDownloader:
             except Exception as e:
                 self.console.print(f"[bold red]Download failed: {e}[/bold red]")
 
+#Função que faz o download usando a função que tem como a configuração o download somente de audio.
     def get_download_audio(self):
         while True:
             link = self.get_video_link()
@@ -61,6 +80,7 @@ class VideoDownloader:
             except Exception as e:
                 self.console.print(f"[bold red]Download failed: {e}[/bold red]")
 
+#Função que faz o download usando a função que tem como a configuração o download somente de video.
     def get_download_video(self):
         while True:
             link = self.get_video_link()

@@ -7,11 +7,12 @@ from utilities import clear_terminal
 clear_terminal()
 console = Console()
 
+#Função que executa o script.
 def main():
 
     menu = MainMenu
     downloader = VideoDownloader()
-    
+
     while True:
         choice = menu.main_menu()
         if choice == "0":
