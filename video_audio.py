@@ -4,18 +4,15 @@ from rich.console import Console
 
 console = Console()
 class VideoDownloader:
-    def __init__(self, path_both="vidoaudio", path_audio="audio", path_video="video"):
+    def __init__(self, path_both="videoaudio", path_audio="audio", path_video="video"):
         self.path_both = path_both
         self.path_video = path_video
         self.path_audio = path_audio
         self.console = Console()
 
-   
-
 #Função que obtem o link que o usuario mandar atraves do promp.ask.
     def get_video_link(self):
         return Prompt.ask("[bold green]Paste the URL of the video you want to download here [/bold green][bold red]or digit 'q' to quit: [/bold red]")
-
 
 #função que define as configurações de download, essa é para download do video e do audio.
     def config_options_both(self):
