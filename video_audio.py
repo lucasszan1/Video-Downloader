@@ -5,19 +5,27 @@ from rich.console import Console
 console = Console()
 class VideoDownloader:
     def __init__(self, path_both="videoaudio", path_audio="audio", path_video="video"):
-        self.path_both = path_both
-        self.path_video = path_video
-        self.path_audio = path_audio
+        self.paths = {
+            "both": path_both,
+            "video": path_video,
+            "audio": path_audio,
+        }
         self.console = Console()
 
 #Função que obtem o link que o usuario mandar atraves do promp.ask.
     def get_video_link(self):
         return Prompt.ask("[bold green]Paste the URL of the video you want to download here [/bold green][bold red]or digit 'q' to quit: [/bold red]")
 
+
+#Função que monta o outtmpl para qualquer das situações escolhidas pelo usuario
+    def output_template(self, type: str) -> str :
+        return f"{self.paths[type]}/%(title)s.%(ext)s'"
+
+
 #função que define as configurações de download, essa é para download do video e do audio.
     def config_options_both(self):
         return {
-                'outtmpl': f'{self.path_both}/%(title)s.%(ext)s',
+                'outtmpl': self.output_template('both'),
                 'format': 'bestvideo+bestaudio/best',
                 'quiet': True,
                 'no_warnings': True,
@@ -29,14 +37,14 @@ class VideoDownloader:
         return {
                 'quiet': True,
                 'no_warnings': True,
-                'outtmpl': f'{self.path_audio}/%(title)s.%(ext)s',
+                'outtmpl': self.output_template('audio'),
                 'format': 'bestaudio',
             }
     
 #Função que define as configurações de download, essa é somente para o video.
     def config_options_only_video(self):
         return {
-                'outtmpl': f'{self.path_video}/%(title)s.%(ext)s',
+                'outtmpl': self.output_template('video'),
                 'format': 'bestvideo',
                 'quiet': True,
                 'no_warnings': True,
